@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <style>
+    #cover {
+      background: rgb(44, 65, 134) url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.doradental.com.tr%2F&psig=AOvVaw1CNrbQHZqht2bb9fjOpBnY&ust=1630494916108000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCIjrq4eR2_ICFQAAAAAdAAAAABAD') center center no-repeat;
+      background-size: cover;
+      height: 100%;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    #cover-caption {
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* only used for background overlay not needed for centering */
+    form:before {
+      content: '';
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.3);
+      z-index: -1;
+      border-radius: 10px;
+    }
+  </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class = "container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{{url_for('patients.index')}}">Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+          aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              {%if current_user.is_authenticated%}
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('patients.logout_patient')}}">Logout</a>
+            </li>
+            {%else%}
+            <a class="nav-link active" aria-current="page" href="{{url_for('patients.register_patient')}}">Register</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('patients.login_patient')}}">Login</a>
+            </li>
+            {%endif%}
+
+          </ul>
+          <!--<form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>-->
+        </div>
+      </div>
+
+    </nav>
+    {%if current_user.is_authenticated%}
+
+    {%else%}
+      <div class="mt-5 py-3 d-flex justify-content-center">
+        <h1 class="display-1">WELCOME OUR DENTAL</h1>
+      </div>
+    {%endif%}
+
+
+  </div>
+
+  <div class="container">
+    {%block content%}
+      
+    {%endblock%}
+  </div>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"
+    integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js"
+    integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

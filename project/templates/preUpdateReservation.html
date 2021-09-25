@@ -1,0 +1,18 @@
+{%extends "dentBase.html"%}
+{%block content%}
+<div class="position-absolute top-50 start-50 translate-middle">
+    
+    <form class="form-control center" method="POST">
+        {{form.hidden_tag()}}
+        <div class="form-group mt-2">
+            {{form.dentist_note(placeholder="Leave your notes here!")}}
+        </div>
+        <div class="form-group">
+            {{form.confirm_button(class="btn btn-primary btn-lg")}}
+        </div>
+    </form>
+    
+</div>
+
+{%endblock%}
+
