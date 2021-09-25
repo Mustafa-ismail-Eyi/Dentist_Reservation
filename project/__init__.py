@@ -1,4 +1,6 @@
+import flask
 from flask import Flask
+import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -19,6 +21,12 @@ db = SQLAlchemy(app)
 # Migrating
 Migrate(app,db)
 
+@app.before_request
+def before_request():
+    flask.session.permanent = True
+    app.permanent_session_lifetime = datetime.timedelta(minutes=5)
+    flask.session.modified = True
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'patients.login_patient'
@@ -29,6 +37,8 @@ from project.patients.views import patients
 from project.core.views import core
 from project.reservations.views import reservations
 from project.dent.views import dent
+
+
 app.register_blueprint(patients)
 app.register_blueprint(core)
 app.register_blueprint(reservations)

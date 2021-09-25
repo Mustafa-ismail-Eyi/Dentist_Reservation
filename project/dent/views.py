@@ -8,19 +8,22 @@ from project.dent.forms import UpdateDentistNoteForm
 
 dent = Blueprint('dent',__name__)
 
+# checking for doest dentist have any reservations
 @login_required
 def checkDentistHasReservation():
+    
     if Reservations.query.filter_by(dentist_id=current_user.dentist_id).first() is not None:
         return True
     else:
         return False
 
 
+# listing the Dentist reservations as in descending date format
 @dent.route('/')
 @dent.route('/DocWelcome')
 @login_required
 def welcome():
-    # burada kaldın
+    
     checkDentistResevation = checkDentistHasReservation() 
     if checkDentistResevation:
         dentist_reservations = db.engine.execute("""
@@ -39,7 +42,7 @@ def welcome():
         return render_template('dentIndex.html')
 
 
-
+# After treatment Dentist may leave his notes or perscription
 @dent.route('/pre-update-reservation/<int:reservation_id>', methods=['GET','POST'])
 def pre_update_reservation(reservation_id):
     form = UpdateDentistNoteForm()
@@ -48,8 +51,10 @@ def pre_update_reservation(reservation_id):
         return redirect(url_for('reservations.update_reservation',reservation_id=int(reservation_id),dentist_note=dentist_note))
     return render_template("preUpdateReservation.html", form=form)
 
+# logout dentist
 @dent.route('/DocLogout')
 @login_required
 def logout_dent():
+    
     logout_user()
     return redirect(url_for('patients.index'))

@@ -25,7 +25,6 @@ def login_patient():
     if form.validate_on_submit():
         # if there is a doc then the query below returns the doc's class
         if bool(re.match(email_pattern, form.email.data)):
-            #print("DENTIST MAILINI YAKALADI")
             dent = Dentist.query.filter_by(dentist_email = form.email.data).first()
             if dent is not None:
                 if dent.check_password(form.password.data) and dent is not None:
@@ -39,7 +38,7 @@ def login_patient():
                 flash('Wrong email or password', category='error')
                 return render_template('login.html',form=form)
         else:
-            #print("PATIENT MAIL ADRESINI YAKALADI")
+            # If user is not dentist then she is a patient
             patient = Patient.query.filter_by(patient_email = form.email.data).first()
             if patient is not None:
                 if patient.check_password(form.password.data) and patient is not None:                 
@@ -55,10 +54,12 @@ def login_patient():
                 return render_template('login.html', form=form)
     return render_template('login.html', form=form)
 
-
+# For adding DentistID 
 def return_max_dentistid() -> int:
     return int(db.engine.execute("""SELECT max(dentist_id::bigint) as dentist_id from dentists""").all()[0][0])
 
+
+# Register User or Dentist with respect to their own mail address
 @patients.route('/register', methods=['GET', 'POST'])
 def register_patient():
     form = PatientRegistrationForm()
@@ -77,22 +78,28 @@ def register_patient():
                 flash("Successfully logged in",category='success')
                 return redirect(url_for('patients.index'))
             else:
-                patient = Patient(
-                    email=form.patient_email.data,
-                    name = form.patient_name.data,
-                    surname = form.patient_surname.data,
-                    password = form.patient_password.data,
-                    phone = form.patient_phone.data
-                    )
-                db.session.add(patient)
-                db.session.commit()            
-                flash("you are registered successfully!", category="success")
-                return redirect(url_for('patients.index'))
+                if Patient.query.filter_by(patient_phone = form.patient_phone.data).first() is None: 
+                    patient = Patient(
+                        email=form.patient_email.data,
+                        name = form.patient_name.data,
+                        surname = form.patient_surname.data,
+                        password = form.patient_password.data,
+                        phone = form.patient_phone.data
+                        )
+                    db.session.add(patient)
+                    db.session.commit()            
+                    flash("you are registered successfully!", category="success")
+                    return redirect(url_for('patients.index'))
+        else:
+            flash("E-mail that you wrote is already in use!", category="warning")
+            render_template('PatientRegister.html', form = form)
+
     return render_template('PatientRegister.html', form = form)
 
 @patients.route('/logout')
 @login_required
 @socketio.on('disconnect')
 def logout_patient():
+    #logout patient
     logout_user()
     return redirect(url_for('patients.index'))
