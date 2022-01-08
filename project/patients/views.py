@@ -14,9 +14,6 @@ patients = Blueprint('patients', __name__)
 def index():
     return render_template('base.html')
 
-@patients.route('/about')
-def about():
-    return render_template('welcome_user.html')
 
 @patients.route('/login', methods=['GET','POST'])
 def login_patient():
@@ -34,7 +31,6 @@ def login_patient():
                         next = url_for('dent.welcome')
                     return redirect(next)
             else:
-                print("DENTIST MAILINI YAKALAYAMADI")
                 flash('Wrong email or password', category='error')
                 return render_template('login.html',form=form)
         else:
@@ -43,7 +39,6 @@ def login_patient():
             if patient is not None:
                 if patient.check_password(form.password.data) and patient is not None:                 
                     login_user(patient)
-                    print("USER LOGGED IN")
                     next = request.args.get('next')
                     if next == None or not next[0] == '/':
                         next = url_for('core.welcome')

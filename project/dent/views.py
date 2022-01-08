@@ -17,13 +17,11 @@ def checkDentistHasReservation():
     else:
         return False
 
-
 # listing the Dentist reservations as in descending date format
 @dent.route('/')
 @dent.route('/DocWelcome')
 @login_required
 def welcome():
-    
     checkDentistResevation = checkDentistHasReservation() 
     if checkDentistResevation:
         dentist_reservations = db.engine.execute("""

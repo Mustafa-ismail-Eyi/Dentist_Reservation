@@ -19,7 +19,8 @@ class PatientRegistrationForm(FlaskForm):
     patient_name = StringField('Name', validators=[DataRequired()])
     patient_surname = StringField('Surname', validators=[DataRequired()])
     patient_phone = StringField('Phone', validators=[InputRequired()])
-    patient_password = PasswordField('Password', validators=[InputRequired(), EqualTo('patient_password_confirm', message="Passwords must match")])
+    patient_password = PasswordField('Password', validators=[InputRequired(),
+     EqualTo('patient_password_confirm', message="Passwords must match")])
     patient_password_confirm = PasswordField('Password_Confirm')
     submit = SubmitField('Register')
 

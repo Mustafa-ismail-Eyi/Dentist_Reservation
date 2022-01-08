@@ -57,14 +57,8 @@ def booking_patient():
         doc_name = form.reservation_doctor_name.data
         patient_note = form.reservation_patient_note.data
         if form.isDateValid(book_date):
-            # print("Book date:", book_date, "doctor: ", doc_name)
-            # print("Patient note: ", form.reservation_patient_note.data)
-            # print("current patient name",current_user.patient_name, "current patient id", current_user.patient_id)
-            # print("isDateValid result:", str(form.isDateValid(book_date)))
             if form.isTimeValid(book_date):
-                print("date validated")
                 if form.isDentistAvailable(book_date, doc_name):
-                    print("now you will make a reservation")
                     flash("Congrats you successfully made a reservation")
                     reservation = Reservations(
                         patient_id = current_user.patient_id,

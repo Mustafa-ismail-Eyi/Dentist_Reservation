@@ -12,6 +12,7 @@ from wtforms import ValidationError
 from project.models import Reservations
 from project import db
 from sqlalchemy import text
+
 class ReservationForm(FlaskForm):
     reservation_datetime = DateTimeField(validators=[DataRequired()], format="%Y-%m-%dT%H:%M")
     reservation_doctor_name = SelectField(choices=[""]+[dentists.dentist_name_surname for dentists in Dentist.query.filter_by()] ,validators=[InputRequired()])
@@ -31,9 +32,6 @@ class ReservationForm(FlaskForm):
             # Then chek it is weekday or not
             if self.isDateWeekDay(date_):
                 # check the there isn't any reservation was made before 
-                # if Reservations.query.filter_by(reservation_datetime=date_).first() is None:  
-                #     return True
-                # else:
                  return True
             else:
                 return False

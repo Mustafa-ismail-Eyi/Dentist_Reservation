@@ -1,11 +1,9 @@
 {%extends "dentBase.html"%}
 {%block content%}
 Dentist: {{current_user.dentist_name_surname}}
-
 {%if dentistHasReservation%}
     <p>You have already reservation.</p><hr>
     {%for rows in dentist_reservations%}
-
     <div class="card">
         <h5 class="card-header">Patient: {{rows[0]|capitalize}} {{rows[1]|capitalize}}<br> Date: {{rows[2]}} <br></h5>
         <div class="card-body">
